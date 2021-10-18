@@ -1,0 +1,54 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <link rel="stylesheet" href="{% static 'css/app.css' %}">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        <title>Add Building</title>
+    </head>
+    <body>
+
+    <div class="container mt-5">
+        <div class="header">
+            <h2>
+                Add Building Number
+            </h2>
+        </div>
+        <form class="form" action="/addBuilding/" method="POST">
+
+            {% csrf_token %}
+            <div class="form-control">
+                <label for="num1" >Building No.</label>
+
+                <input
+                id="flor_number"
+                name="flor_number"
+                type="text"
+                {% comment %} onchange="myFunction(this.value)"  {% endcomment %}
+
+                class="form-control form-control-lg"
+                placeholder="Enter Building No."> 
+                    
+            </div>
+            
+            <!-- <div id="product"></div> -->
+            <button type="submit">Submit</button>
+            
+            {% comment %} <a href="{% url 'test_list' %}" 
+                <button type="button">Test List</button>
+            </a> {% endcomment %}
+            
+        </form>
+       
+        
+        <script>
+        </script>
+    </body>
+</html>

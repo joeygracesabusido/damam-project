@@ -1,0 +1,46 @@
+{% extends "base.html"%}
+
+
+{% block content %}
+
+<table class="table table-borderless">
+    <thead class="border-bottom font-weight-bold">
+        <tr>
+             <td>ID</td>
+             <td>Floor Number</td>
+             <td>Barcode</td>
+            
+             <td>
+                
+             </td>
+             <td>
+                <a href="{% url 'building-dropdown' %}"<button type="button" class="btn btn-success"><i class="fas fa-database"></i> +AddNew</button></a>
+             </td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for list in blist%}
+
+            <tr>
+                <td>{{list.id}}</td>
+                <td>{{list.flor_num}}</td>
+                <td>{{list.barcode}}</td>
+                
+                <td>
+                    <a href=""
+                    <button type="button" class="btn btn-primary">
+                    <i class="fas fa-database"></i> Edit</button></a>
+                </td>
+                <td>
+                     <a href="{% url 'barcode-delete' list.id%}"method="POST">
+                        <button type="button" class="btn btn-danger"><i class="fas fa-database"></i> Delete</button>   
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock content %}
+

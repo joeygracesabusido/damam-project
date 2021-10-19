@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from .models import Barcodes, florNumber
 
 from rest_framework.decorators import api_view
@@ -56,20 +56,45 @@ def postBarcodes(request):
     barcodes
     """
     if request.method == 'POST':
+        
         flor_number_id = request.POST.get('floor_categories')
         barcode = request.POST.get('Barcode')
         flor_number = florNumber.objects.get(id=flor_number_id)
+
+
 
         db_save = Barcodes.objects.create(
             flor_num = flor_number,
             barcode = barcode
         )
 
-    return render(request, 'navbar.html')
+        return redirect('barcode-list')
+
+
+    else:
+        return render(request,"navbar.html",{})
 
 def get_florNum(request):
     results = florNumber.objects.all()
     # context = {"flor_number": flor_number}
     return render(request, "insertBarcode.html", {"showflor": results})
 
+def barcodeList(request):
+    """
+    This function is for 
+    barcode list 
+    """
+    results = Barcodes.objects.all()
+    return render(request, "barcodelist.html", {"blist": results})
 
+def barcodelist2(request):
+    return render(request, 'barcodelist.html')
+
+def deleteBarcode(request,id):
+    """
+    This function is for
+    Deleting Entry for Barcode
+    """
+    barcodes = Barcodes.objects.get(pk=id)
+    barcodes.delete()
+    return redirect('barcode-list')

@@ -9,6 +9,7 @@ urlpatterns = [
     path('addBuilding/', views.addBuilding, name="addBuilding"),
     path('postBarcodes/', views.postBarcodes, name="postBarcodes"),
     path('building-dropdown/', views.get_florNum, name="building-dropdown"),
+    path('building-dropdown-list/', views.get_florNum2, name="building-dropdown-list"),
     path('barcode-list/', views.barcodeList, name="barcode-list"), 
     path('barcode-list2/', views.barcodelist2, name="barcode-list2"), 
     path('barcode-delete/<int:id>/', views.deleteBarcode, name="barcode-delete"),

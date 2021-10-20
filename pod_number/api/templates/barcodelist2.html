@@ -1,0 +1,77 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <link rel="stylesheet" href="{% static 'css/app.css' %}">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Insert Barecode</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+
+        <div class="container mt-5">
+        <div class="header">
+            <h2>
+                Add Barcode
+            </h2>
+        </div>
+        <form class="form" action="/postBarcodes/" method="POST" >
+
+             {% csrf_token %}
+            <div  class="form-control">
+                <label for="floor_categories" >Floor Number</label>
+                <select name="floor_categories" class="filter-selectbox">
+                {% for result in showflor %}
+                    <option value="{{ result.id }}">{{ result.flor_number }}</option>
+                {% endfor %} 
+                
+                </select> 
+
+            </div>
+            
+            <div class="form-control">
+                <label for="Barcode" >Barcode</label>
+
+                <input
+                id="Barcode"
+                name="Barcode"
+                type="text"
+                {% comment %} onchange="myFunction(this.value)"  {% endcomment %}
+
+                class="form-control form-control-lg"
+                placeholder="Enter Building No."> 
+                    
+            </div>
+            
+            <!-- <div id="product"></div> -->
+            <button type="submit">Submit</button>
+            
+            {% comment %} <a href="{% url 'test_list' %}" 
+                <button type="button">Test List</button>
+            </a> {% endcomment %}
+            
+        </form>
+       
+            {% comment %} <p><b>Flor Number: </b>
+                <select name="floor_categories" class="filter-selectbox">
+                    {% for result in showflor %}
+                        <option value="{{ result.id }}">{{ result.flor_number }}</option>
+                    {% endfor %} </select> 
+
+
+            </p> {% endcomment %}
+
+        
+              
+
+        
+        <script>
+        
+        </script>
+    </body>
+</html>

@@ -79,13 +79,30 @@ def get_florNum(request):
     # context = {"flor_number": flor_number}
     return render(request, "insertBarcode.html", {"showflor": results})
 
+def get_florNum2(request):
+    results = florNumber.objects.all()
+    return render(request, "barcodelist.html", {"showflor": results})
+
 def barcodeList(request):
     """
     This function is for 
     barcode list 
     """
-    results = Barcodes.objects.all()
-    return render(request, "barcodelist.html", {"blist": results})
+
+    if request.method=="POST":
+        
+        search_param = request.POST.get('flornum')
+       
+        searchResult = Barcodes.objects.raw('SELECT id, flor_num_id, barcode \
+                                            from Barcodes where \
+                                            barcode = "'+ search_param +'"')
+       
+        return render (request,"barcodelist.html", {"blist": searchResult})
+        
+    else:
+        searchResult = Barcodes.objects.all()
+        return render(request, "barcodelist.html", {"blist": searchResult})
+
 
 def barcodelist2(request):
     return render(request, 'barcodelist.html')

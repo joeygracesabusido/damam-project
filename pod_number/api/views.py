@@ -1,3 +1,4 @@
+from django.http.response import HttpResponse
 from django.shortcuts import redirect, render
 from .models import Barcodes, florNumber
 
@@ -62,19 +63,29 @@ def postBarcodes(request):
     barcodes
     """
     if request.method == 'POST':
-        
+        # print(request.POST)
         flor_number_id = request.POST.get('floor_categories')
-        barcode = request.POST.get('Barcode')
+        barcode2 = request.POST.get('Barcode')
         flor_number = florNumber.objects.get(id=flor_number_id)
 
+       
+        # for flor_alert in Barcodes.objects.all():
 
+        # flor_alert = Barcodes.objects.all()
+        # for e in Barcodes.objects.all():
+        if Barcodes.objects.filter(barcode = barcode2):
+        
+            return HttpResponse('Record already exist')
+        
+        else:
 
-        db_save = Barcodes.objects.create(
-            flor_num = flor_number,
-            barcode = barcode
-        )
+            db_save = Barcodes.objects.create(
+                flor_num = flor_number,
 
-        return redirect('barcode-list')
+                barcode = barcode2
+            )
+
+            return redirect('barcode-list')
 
 
     else:
@@ -101,7 +112,7 @@ def barcodeList(request):
        
         searchResult = Barcodes.objects.raw('SELECT id, flor_num_id, barcode \
                                             from Barcodes where \
-                                            barcode = "'+ search_param +'"')
+                                            barcode like "%'+ search_param +'%"')
        
         return render (request,"barcodelist.html", {"blist": searchResult})
         

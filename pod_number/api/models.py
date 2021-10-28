@@ -1,6 +1,7 @@
 from django import db
 from django.db import models
 
+
 # Create your models here.
 
 class florNumber(models.Model):
@@ -19,8 +20,9 @@ class Barcodes(models.Model):
     flor_num = models.ForeignKey(florNumber, max_length=100,
                                 blank=True, null=True, on_delete=models.CASCADE)
     barcode = models.CharField(max_length=100)
-
     
+    update = models.DateTimeField(auto_now=True)
+    # created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['flor_num']

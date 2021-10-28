@@ -145,4 +145,10 @@ def loginPage(request):
                   {"form": form})
 
 
+def logout_user(request):
+    logout(request)
+    messages.success(request,("You were Logged Out!!!"))
+    return redirect('login')
+
+
 

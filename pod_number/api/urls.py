@@ -3,7 +3,8 @@ from .import views
 
 
 urlpatterns = [
-    path('', views.navBar_dashboard, name="navbar"),
+    path('', views.loginPage, name="login"),
+    path('navbar/', views.navBar_dashboard, name="navbar"),
     path('create-buildingInfo/', views.post_buildingInfo, name="create-buildingInfo"),
     path('create-building/', views.testing, name="create-building"),
     path('addBuilding/', views.addBuilding, name="addBuilding"),

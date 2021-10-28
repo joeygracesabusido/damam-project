@@ -6,6 +6,12 @@ from rest_framework.decorators import api_view
 from .serializers import BarcodeSerialzers
 from rest_framework.response import Response
 
+
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
+from django.contrib import messages, auth
+
+
 @api_view(['POST'])
 def post_buildingInfo(request):
     """
@@ -115,3 +121,28 @@ def deleteBarcode(request,id):
     barcodes = Barcodes.objects.get(pk=id)
     barcodes.delete()
     return redirect('barcode-list')
+
+# this is for login function
+def loginPage(request):
+    #return render(request, 'accounts/login.html')
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            messages.info(request, f"You are now logged in as {username}")
+            return redirect('navbar')
+        else:
+            messages.error(request, "Invalid username or password.")
+    else:
+        messages.error(request, "Invalid username or password.")
+    form = AuthenticationForm()
+    return render(request,
+                  "login.html",
+                  {"form": form})
+
+
+

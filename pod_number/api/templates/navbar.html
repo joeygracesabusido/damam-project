@@ -15,34 +15,56 @@
                 </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="create-building">Create Floor</a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="building-dropdown">Create Barcode</a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="barcode-list">Barcode List</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Dropdown
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="create-building">Create Floor</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link disabled">Disabled</a>
-                    </li>
+                    {% if user.is_authenticated %}
+
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="create-building">Create Floor</a>
+                        </li>
+                        
+                         <li class="nav-item">
+                            <a class="nav-link" href="building-dropdown">Create Barcode</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="barcode-list">Barcode List</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Dropdown
+                            </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="create-building">Create Floor</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link disabled">Disabled</a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link" href="logout">
+                            Log Out</a> 
+                        </li>
+                        
+                       
+
+                    {% else %}
+                        
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="login">
+                            Log in</a>
+                        </li>
+
+                        
+                        
+
+                    {% endif %}
                     
-                    <li class="nav-item">
-                    <a class="nav-link" href="logout">
-                    Log Out</a>
-                    </li>
+                   
+                    
+                    
                     {% comment %} {% else %}
                         <li class="nav-item">
                         <a class="nav-link" href="login">

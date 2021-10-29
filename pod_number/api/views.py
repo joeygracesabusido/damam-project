@@ -162,4 +162,11 @@ def logout_user(request):
     return redirect('login')
 
 
+def testing(request):
+    """
+    This is for testing 
+    Only
+    """
+
+
 

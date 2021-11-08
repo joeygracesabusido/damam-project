@@ -162,11 +162,31 @@ def logout_user(request):
     return redirect('login')
 
 
-def testing(request):
+def get_Barcode(request):
+    results = Barcodes.objects.all()
+    # context = {"flor_number": flor_number}
+    return render(request, "transactions.html", {"showBarcode": results})
+
+
+def transaction_post(request):
     """
-    This is for testing 
-    Only
+    This is for posting Transaction
     """
+
+    if request.method=="POST":
+        
+        search_param = request.POST.get('barcode')
+       
+        searchResult2 = Barcodes.objects.raw('SELECT id, flor_num_id, barcode \
+                                            from Barcodes where \
+                                            barcode like "%'+ search_param +'%"')
+       
+        return render (request,"transaction.html", {"blist": searchResult2})
+        
+    else:
+        searchResult2 = Barcodes.objects.all()
+        return render(request, "transaction.html", {"blist": searchResult2})
+
 
 
 

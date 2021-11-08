@@ -28,4 +28,23 @@ class Barcodes(models.Model):
         ordering = ['flor_num']
         db_table = 'barcodes'
 
+class Transactions(models.Model):
+    """
+    This is for Transaction model
+    """ 
+    flor_num = models.ForeignKey(florNumber, 
+                                blank=True, null=True,
+                                on_delete=models.CASCADE)  
+    barcode = models.CharField(max_length=100)
+    type_sequence = models.CharField(max_length=100)
+    update = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+
+    def __str__(self):
+        return self.flor_number
+
+    class Meta:
         
+        db_table = 'transactions'
+

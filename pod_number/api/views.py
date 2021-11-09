@@ -177,16 +177,13 @@ def transaction_post(request):
     """
     
     if request.method == 'POST':
-        # print(request.POST)
+        
         flor_number_id = request.POST.get('floor_categories')
         barcode2 = request.POST.get('Barcode')
         flor_number = florNumber.objects.get(id=flor_number_id)
 
        
-        # for flor_alert in Barcodes.objects.all():
-
-        # flor_alert = Barcodes.objects.all()
-        # for e in Barcodes.objects.all():
+       
         if Barcodes.objects.filter(barcode = barcode2):
         
             return HttpResponse('Record already exist')
@@ -229,7 +226,7 @@ def testing_ajax(request):
             
             result.append(barcode_json)
             
-        print(result)
+        
         data = json.dumps(result)
         mimetype = 'application/json'
         return HttpResponse(data, content_type='application/json')

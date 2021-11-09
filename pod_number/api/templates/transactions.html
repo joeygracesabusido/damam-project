@@ -1,89 +1,89 @@
-{% comment %} {% load static %} {% endcomment %}
-{% comment %} {% extends "base.html"%} {% endcomment %}
-
-
-{% comment %} {% block content %} {% endcomment %}
-
 
 <!DOCTYPE html>
 
 <html>
     <head>
-        {% comment %} <link rel="stylesheet" href="{% static 'css/app.css' %}"> {% endcomment %}
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Insert Barecode</title>
+        <title></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        {% comment %} <link rel="stylesheet" href=""> {% endcomment %}
-        {% comment %} <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" 
-         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.cs"> {% endcomment %}
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" 
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.cs">
+        {% comment %} <link rel="stylesheet" href="{% static 'css/app.css' %}"> {% endcomment %}
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
     </head>
-    <style>
-
-    </style>
     <body>
+        <form>
+                <div  class="container mt-3">
+                    <label for="Product">Barcode</label><br>
+                    <input 
+                    type="text"
+                    name="product"
+                    id="product"
+                    >
+                    </input><br>
+                </div>
 
-        <div class="container mt-3">
-        <div class="header">
-            <h2>
-                Add Barcode
-            </h2>
-        </div>
-        <form class="form" action="/postBarcodes/" method="POST" >
+                <div  class="container mt-3">
+                    <label for="flor_number">Flor Number</label><br>
+                    <input 
+                    type="text"
+                    name="florNumber"
+                    id="florNumber"
+                    >
+                    </input><br>
+                </div>
 
-             {% csrf_token %}
-            <div  class="form-control container mt-3">
-                <label for="Barcode" >Floor Number</label>
-                <select name="barcode_categories" class="filter-selectbox"
-                    id="barcode"
-                >
-                {% for result in showBarcode %}
-                    <option value="{{ result.id }}">{{ result.barcode }}</option>
-                {% endfor %} 
-                
-                </select> 
+                <div  class="container mt-3">
+                    <label for="Type_Sequence">Type & Sequence</label><br>
+                    <select id="type" name="type">
+                        <option value="Cabin Ass">Cabin Ass</option>
+                        <option value="errection">Errection</option>
+                        <option value="waterproof">Water proof</option>
+                        <option value="1st fix elec">1st Fix Elec</option>
+                    </select>
+                </div>
 
-                 <button type="submit" class="btn btn-secondary">
-                 <i class="fas fa-database"></i>Search</button>
-            </div>
-            
-            <div class="form-control">
-                <label for="Barcode" >Barcode</label>
-
-                <input
-                id="Barcode"
-                name="Barcode"
-                type="text"
-                {% comment %} onchange="myFunction(this.value)"  {% endcomment %}
-
-                class="form-control form-control-lg"
-                placeholder="Enter Building No."> 
-                {% for i in searchResult2 % }
-                print({i.id})
-                
-                    
-            </div>
-            
-           
-            {% comment %} <div class="form-control container mt-7">
-                <button type="submit">Submit</button>
-            
-            
-            </div> {% endcomment %}
-           
-        </form>
-       
-            
-        
-              
-
+                <div  class="container mt-3">
+                    <button type="button" class="btn btn-success"><i class="fas fa-database">
+                    </i>Save</button>
+                </div>
+        </form> 
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
         
         <script>
-        
+        {% comment %} $( function() {
+            $( "#product" ).autocomplete({
+            source:'{ % url 'test' % }',
+            minlenght: 2
+            });
+        } ); {% endcomment %}
+        $("#product").autocomplete({
+            source: function (request,response){
+                $.ajax({
+                    url: "{% url 'test' %}",
+                    dataType: "json",
+                    data: {product: request.product},
+                    success: function(data) {
+                        
+                        response ($.map(data, function(item){
+                            return {
+                                value: item.barcode,
+                                florNumb: item.florNumber
+                            }
+                        }))
+                    }
+                });
+            },
+            select: function(event, ui){
+                $(this).val(ui.item.value);
+                $('#florNumber').val(ui.item.florNumb)
+            }
+        });
         </script>
     </body>
+    
 </html>

@@ -1,4 +1,5 @@
-from django.http.response import HttpResponse
+import json
+from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from .models import Barcodes, florNumber
 
@@ -11,6 +12,8 @@ from rest_framework.response import Response
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib import messages, auth
+
+from django.db.models import Q
 
 
 @api_view(['POST'])
@@ -172,21 +175,66 @@ def transaction_post(request):
     """
     This is for posting Transaction
     """
+    
+    if request.method == 'POST':
+        # print(request.POST)
+        flor_number_id = request.POST.get('floor_categories')
+        barcode2 = request.POST.get('Barcode')
+        flor_number = florNumber.objects.get(id=flor_number_id)
 
-    if request.method=="POST":
+       
+        # for flor_alert in Barcodes.objects.all():
+
+        # flor_alert = Barcodes.objects.all()
+        # for e in Barcodes.objects.all():
+        if Barcodes.objects.filter(barcode = barcode2):
         
-        search_param = request.POST.get('barcode')
-       
-        searchResult2 = Barcodes.objects.raw('SELECT id, flor_num_id, barcode \
-                                            from Barcodes where \
-                                            barcode like "%'+ search_param +'%"')
-       
-        return render (request,"transaction.html", {"blist": searchResult2})
+            return HttpResponse('Record already exist')
+        
+        else:
+
+            db_save = Barcodes.objects.create(
+                flor_num = flor_number,
+
+                barcode = barcode2
+            )
+
+            return redirect('barcode-list')
+
+
+    else:
+        return render(request,"navbar.html",{})
+
+    
+
+def testing_ajax(request):
+    """
+    This is for testing ajax function
+    """
+    # if 'product' in request.GET:
+    #     qs = Barcodes.objects.filter(barcode__icontains = request.GET.get('product'))
+    #     barcodeTest = list()
+    #     for i in qs:
+    #         barcodeTest.append(i.barcode)
+            
+    #     return JsonResponse(barcodeTest, safe=False)
+    if request.is_ajax():
+        term = request.GET.get('product','')
+        barcodeTest = Barcodes.objects.filter(barcode__icontains = term)
+        result = []
+        for b in barcodeTest:
+            barcode_json = {}
+            barcode_json['barcode'] = b.barcode
+            barcode_json['florNumber'] = b.flor_num.flor_number
+            
+            result.append(barcode_json)
+            
+        print(result)
+        data = json.dumps(result)
+        mimetype = 'application/json'
+        return HttpResponse(data, content_type='application/json')
         
     else:
-        searchResult2 = Barcodes.objects.all()
-        return render(request, "transaction.html", {"blist": searchResult2})
-
-
-
+    
+        return render(request, 'test.html')
 

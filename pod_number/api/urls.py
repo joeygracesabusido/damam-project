@@ -16,4 +16,5 @@ urlpatterns = [
     path('barcode-list2/', views.barcodelist2, name="barcode-list2"), 
     path('barcode-delete/<int:id>/', views.deleteBarcode, name="barcode-delete"),
     path('search_barcode/', views.get_Barcode, name="search_barcode"),
+    path('test/', views.testing_ajax, name="test"),
 ]

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    </head>
+    <body>
+        <form>
+            <label for="Product">Barcode</label>
+            <input 
+            type="text"
+            name="product"
+            id="product"
+            >
+            </input>
+
+            <label for="flor_number">Flor Number</label>
+            <input 
+            type="text"
+            name="florNumber"
+            id="florNumber"
+            >
+            </input>
+
+        </form> 
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+        
+        <script>
+        {% comment %} $( function() {
+            $( "#product" ).autocomplete({
+            source:'{ % url 'test' % }',
+            minlenght: 2
+            });
+        } ); {% endcomment %}
+        $("#product").autocomplete({
+            source: function (request,response){
+                $.ajax({
+                    url: "{% url 'test' %}",
+                    dataType: "json",
+                    data: {product: request.product},
+                    success: function(data) {
+                        
+                        response ($.map(data, function(item){
+                            return {
+                                value: item.barcode,
+                                florNumb: item.florNumber
+                            }
+                        }))
+                    }
+                });
+            },
+            select: function(event, ui){
+                $(this).val(ui.item.value);
+                $('#florNumber').val(ui.item.florNumb)
+            }
+        });
+        </script>
+    </body>
+    
+</html>

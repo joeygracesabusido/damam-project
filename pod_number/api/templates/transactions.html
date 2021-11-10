@@ -20,8 +20,8 @@
                     <label for="Product">Barcode</label><br>
                     <input 
                     type="text"
-                    name="product"
-                    id="product"
+                    name="barcode"
+                    id="barcode"
                     >
                     </input><br>
                 </div>
@@ -30,8 +30,8 @@
                     <label for="flor_number">Flor Number</label><br>
                     <input 
                     type="text"
-                    name="florNumber"
-                    id="florNumber"
+                    name="flor"
+                    id="flor"
                     >
                     </input><br>
                 </div>
@@ -39,17 +39,33 @@
                 <div  class="container mt-3">
                     <label for="Type_Sequence">Type & Sequence</label><br>
                     <select id="type" name="type">
-                        <option value="Cabin Ass">Cabin Ass</option>
+                        <option value="cabin Ass">Cabin Ass</option>
                         <option value="errection">Errection</option>
                         <option value="waterproof">Water proof</option>
                         <option value="1st fix elec">1st Fix Elec</option>
+                        <option value="1st fix plumbing">1st Fix Pluming</option>
+                        <option value="floor tile">Floor Tile</option>
+                        <option value="wall tile">Wall Tile</option>
+                        <option value="wall grout">Wall Grout</option>
+                        <option value="2nd fix elec">2nd Fix Elec</option>
+                        <option value="fixtures">Fixtures</option>
+                        <option value="silicone">Silicon</option>
+                        <option value="floor grout">Floor Grout</option>
+                        <option value="clean ">Clean</option>
+                        <option value="test ">Test</option>
+                        <option value="wrap ">Wrap</option>
                     </select>
                 </div>
 
                 <div  class="container mt-3">
-                    <button type="button" class="btn btn-success"><i class="fas fa-database">
+                    <button type="submit" class="btn btn-success"><i class="fas fa-database">
                     </i>Save</button>
-                </div>
+                </div><br>
+
+                <div class="container mt-3">
+                    <table class="table table-borderless">
+        
+
         </form> 
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
         <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
@@ -61,7 +77,8 @@
             minlenght: 2
             });
         } ); {% endcomment %}
-        $("#product").autocomplete({
+
+        $("#barcode").autocomplete({
             source: function (request,response){
                 $.ajax({
                     url: "{% url 'test' %}",
@@ -72,7 +89,7 @@
                         response ($.map(data, function(item){
                             return {
                                 value: item.barcode,
-                                florNumb: item.florNumber
+                                florNumb: item.flor
                             }
                         }))
                     }
@@ -80,9 +97,53 @@
             },
             select: function(event, ui){
                 $(this).val(ui.item.value);
-                $('#florNumber').val(ui.item.florNumb)
+                $('#flor').val(ui.item.florNumb)
             }
-        });
+        }); 
+
+         // getCookie Provided by Django in the Official Docs
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+
+        // Setting the Click Event Listener on the Submit Button
+        $('[type="submit"]').on('click', function (e) {
+            e.preventDefault()
+            // Making the AJAX Request
+            $.ajax({
+                url: "{% url 'insert-transactons' %}",
+                type: "POST",
+                data: {
+                    barcode:  $('#barcode').val(),
+                    flor:  $('#flor').val(),
+                    type:  $('#type').val(),
+                },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                },
+                success: function (data) {
+                     window.location.href = "transactions-list"
+                
+                    console.log(data);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        })
         </script>
     </body>
     

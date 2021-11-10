@@ -1,0 +1,79 @@
+{% extends "base.html"%}
+
+
+{% block content %}
+
+
+
+<form class="form"  method ="POST">
+    {% csrf_token %} 
+
+    
+    {% comment %} <label for="floor_categories" >Floor Number</label>
+    <select name="floor_categories" class="filter-selectbox">
+    {% for result in showflor %}
+        <option value="{{ result.id }}">{{ result.flor_number }}</option>
+    {% endfor %} 
+    
+    </select>  {% endcomment %}
+
+    
+    
+    {% comment %} <input type="text"
+    name='flornum'
+    placeholder="Barcode"
+    />   
+
+
+    <button type="submit" class="btn btn-secondary"><i class="fas fa-database"></i>Search</button> {% endcomment %}
+
+    <table class="table table-borderless">
+        <thead class="border-bottom font-weight-bold">
+            <tr>
+                <td>ID</td>
+                <td>Floor Number</td>
+                <td>Barcode</td>
+                <td>Type of Sequence</td>
+                <td>Time Updated</td>
+                
+                
+                <td>
+                    
+                </td>
+                {% comment %} <td>
+                    <a href="{% url 'insert-transactons' %}"<button type="button" class="btn btn-success"><i class="fas fa-database"></i> +AddNew</button></a>
+                </td> {% endcomment %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for list in showTransactions%}
+
+                <tr>
+                    <td>{{list.id}}</td>
+                    <td>{{list.flor_num}}</td>
+                    <td>{{list.barcode}}</td>
+                    <td>{{list.type_sequence}}</td>
+                    <td>{{list.update}}</td>
+                    
+                    <td>
+                        <a href=""
+                        <button type="button" class="btn btn-primary">
+                        <i class="fas fa-database"></i> Edit</button></a>
+                    </td>
+                    <td>
+                        <a href="{% url 'transactions-delete' list.id%}"method="POST">
+                            <button type="button" class="btn btn-danger"><i class="fas fa-database"></i> Delete</button>   
+                        </a>
+                    </td>
+                </tr>
+            {% comment %} {% empty %}
+                <p>
+                    No Record found click add new Button
+                </p> {% endcomment %}
+            {% endfor %}
+        </tbody>
+    </table>
+</form>
+
+{% endblock content %}
+

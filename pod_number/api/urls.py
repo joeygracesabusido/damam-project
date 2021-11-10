@@ -17,4 +17,7 @@ urlpatterns = [
     path('barcode-delete/<int:id>/', views.deleteBarcode, name="barcode-delete"),
     path('search_barcode/', views.get_Barcode, name="search_barcode"),
     path('test/', views.testing_ajax, name="test"),
+    path('insert-transactons/', views.transaction_post, name="insert-transactons"),
+    path('search_barcode/transactions-list/', views.get_transaction, name="search_barcode/transactions-list"), 
+    path('transactions-delete/<int:id>/', views.deleteTransaction, name="transactions-delete"),
 ]

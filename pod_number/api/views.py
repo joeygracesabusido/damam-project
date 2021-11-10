@@ -1,7 +1,7 @@
 import json
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
-from .models import Barcodes, florNumber
+from .models import Barcodes, florNumber, Transactions
 
 from rest_framework.decorators import api_view
 
@@ -178,30 +178,37 @@ def transaction_post(request):
     
     if request.method == 'POST':
         
-        flor_number_id = request.POST.get('floor_categories')
-        barcode2 = request.POST.get('Barcode')
-        flor_number = florNumber.objects.get(id=flor_number_id)
+        barcode2 = request.POST.get('barcode')
+        flor_number_id = request.POST.get('flor')
+        # flor_number = florNumber.objects.get(id=flor_number_id)
+        type_sequence = request.POST.get('type')
 
-       
-       
-        if Barcodes.objects.filter(barcode = barcode2):
         
-            return HttpResponse('Record already exist')
-        
-        else:
+        db_save = Transactions.objects.create(
+            flor_num = flor_number_id,
+            barcode = barcode2,
+            type_sequence = type_sequence
+        )
 
-            db_save = Barcodes.objects.create(
-                flor_num = flor_number,
-
-                barcode = barcode2
-            )
-
-            return redirect('barcode-list')
+        return redirect('test')
 
 
     else:
-        return render(request,"navbar.html",{})
+        return render(request,"test.html",{})
+    
+def deleteTransaction(request,id):
+    """
+    This function is for
+    Deleting Entry for Barcode
+    """
+    transactions_pk = Transactions.objects.get(pk=id)
+    transactions_pk.delete()
+    return redirect('search_barcode/transactions-list')
 
+def get_transaction(request):
+    results = Transactions.objects.all()
+    # context = {"flor_number": flor_number}
+    return render(request, "transactionsList.html", {"showTransactions": results})
     
 
 def testing_ajax(request):
@@ -217,12 +224,12 @@ def testing_ajax(request):
     #     return JsonResponse(barcodeTest, safe=False)
     if request.is_ajax():
         term = request.GET.get('product','')
-        barcodeTest = Barcodes.objects.filter(barcode__icontains = term)
+        barcodeTest = Barcodes.objects.filter(Q(barcode__startswith = term) | Q(barcode__icontains = term))
         result = []
         for b in barcodeTest:
             barcode_json = {}
             barcode_json['barcode'] = b.barcode
-            barcode_json['florNumber'] = b.flor_num.flor_number
+            barcode_json['flor'] = b.flor_num.flor_number
             
             result.append(barcode_json)
             

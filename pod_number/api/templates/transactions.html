@@ -15,7 +15,8 @@
         <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
     </head>
     <body>
-        <form>
+        <form action="{% url 'insert-transactons' %}" method="POST">
+                {% csrf_token %}
                 <div  class="container mt-3">
                     <label for="Product">Barcode</label><br>
                     <input 
@@ -36,7 +37,7 @@
                     </input><br>
                 </div>
 
-                <div  class="container mt-3">
+                {% comment %} <div  class="container mt-3">
                     <label for="Type_Sequence">Type & Sequence</label><br>
                     <select id="type" name="type">
                         <option value="cabin Ass">Cabin Ass</option>
@@ -55,15 +56,38 @@
                         <option value="test ">Test</option>
                         <option value="wrap ">Wrap</option>
                     </select>
-                </div>
+                </div>  {% endcomment %}
+
+                <table class="table table-borderless">
+                    <thead class="border-bottom font-weight-bold">
+                        <tr>
+                            
+                            <td>Type & Sequence</td>
+                            
+                           
+                            <td>
+                                <button type="button"  id="add_button" class="btn btn-primary"><i class="fas fa-database">
+                                </i>Add</button>
+                            </td>
+
+                           
+                        </tr>
+                    </thead>
+                    <tbody id="addrow">
+                        
+                        
+                    </tbody>
+                </table>
+
+
+
 
                 <div  class="container mt-3">
                     <button type="submit" class="btn btn-success"><i class="fas fa-database">
                     </i>Save</button>
                 </div><br>
 
-                <div class="container mt-3">
-                    <table class="table table-borderless">
+                
         
 
         </form> 
@@ -120,7 +144,7 @@
         const csrftoken = getCookie('csrftoken');
 
         // Setting the Click Event Listener on the Submit Button
-        $('[type="submit"]').on('click', function (e) {
+        {% comment %} $('[type="submit"]').on('click', function (e) {
             e.preventDefault()
             // Making the AJAX Request
             $.ajax({
@@ -129,7 +153,7 @@
                 data: {
                     barcode:  $('#barcode').val(),
                     flor:  $('#flor').val(),
-                    type:  $('#type').val(),
+                    //type:  $('#type').val(),
                 },
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader("X-CSRFToken", csrftoken);
@@ -143,7 +167,68 @@
                     console.log(error);
                 }
             });
-        })
+        }) {% endcomment %}
+        $(document).ready(function(){
+                var maxField = 10; //Input fields increment limitation
+                var addButton = $('#add_button'); //Add button selector
+                var wrapper = $('#addrow'); //Input field wrapper
+                var x = 0; //Initial field counter is 1
+                
+                //Once add button is clicked
+                $(addButton).click(function(){
+                    //Check maximum number of input fields
+                    x++; //Increment field counter
+                    var fieldHTML = `<tr>
+                   
+
+                    <td>
+                        <select id="mySelect${x}" name="mySelect" onchange="myFunction()">
+                            <option value="cabin Ass">Cabin Ass</option>
+                            <option value="errection">Errection</option>
+                            <option value="waterproof">Water proof</option>
+                            <option value="1st fix elec">1st Fix Elec</option>
+                            <option value="1st fix plumbing">1st Fix Pluming</option>
+                            <option value="floor tile">Floor Tile</option>
+                            <option value="wall tile">Wall Tile</option>
+                            <option value="wall grout">Wall Grout</option>
+                            <option value="2nd fix elec">2nd Fix Elec</option>
+                            <option value="fixtures">Fixtures</option>
+                            <option value="silicone">Silicon</option>
+                            <option value="floor grout">Floor Grout</option>
+                            <option value="clean ">Clean</option>
+                            <option value="test ">Test</option>
+                            <option value="wrap ">Wrap</option>
+                           
+                        </select>
+                    </td>
+
+                    
+
+                    <td>
+                        <button type="button"  id="remove_button" class="btn btn-danger"><i class="fas fa-database">
+                        </i>Remove</button>
+                    </td>
+                    </tr>
+                     `; //New input field html 
+                    $(wrapper).append(fieldHTML); //Add field html
+                    
+                });
+                
+                //Once remove button is clicked
+                $(wrapper).on('click', '#remove_button', function(e){
+                    e.preventDefault();
+                    $(this).closest('tr').remove(); //Remove field html 
+
+                    x--; //Decrement field counter
+                });
+            });
+
+        </script>
+        <script>
+            function myFunction() {
+              var x = document.getElementById("mySelect").selectedIndex;
+              alert(document.getElementsByTagName("option")[x].value);
+            }
         </script>
     </body>
     

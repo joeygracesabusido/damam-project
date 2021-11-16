@@ -8,7 +8,7 @@ class florNumber(models.Model):
     flor_number = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.flor_number
+        return f'{self.id}-{self.flor_number}'
 
     class Meta:
         
@@ -32,12 +32,12 @@ class Transactions(models.Model):
     """
     This is for Transaction model
     """ 
-    # flor_num = models.ForeignKey(florNumber, 
-    #                             blank=True, null=True,
-    #                             on_delete=models.CASCADE) 
-    flor_num = models.CharField(max_length=100 ,blank=True, null=True)
+    flor_num = models.ForeignKey(florNumber, 
+                                blank=True, null=True,
+                                on_delete=models.CASCADE) 
+    # flor_num = models.CharField(max_length=100 ,blank=True, null=True)
     barcode = models.CharField(max_length=100 ,blank=True, null=True)
-    type_sequence = models.CharField(max_length=100 ,blank=True, null=True)
+    # type_sequence = models.CharField(max_length=100 ,blank=True, null=True)
     update = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
@@ -49,3 +49,23 @@ class Transactions(models.Model):
         
         db_table = 'transactions'
 
+
+class TypeSequence(models.Model):
+    """
+    This is for Model TypeSequence
+    
+    """
+    transaction = models.ForeignKey(Transactions, 
+                                blank=True, null=True,
+                                on_delete=models.CASCADE) 
+    type_sequence = models.CharField(max_length=100 ,blank=True, null=True)
+    update = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        
+        db_table = 'TypeSequence'
+        
+    
+    def __str__(self):
+        return f'{self.id}-{self.type_sequence}'

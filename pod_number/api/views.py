@@ -1,7 +1,7 @@
 import json
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
-from .models import Barcodes, florNumber, Transactions
+from .models import Barcodes, florNumber, Transactions, TypeSequence
 
 from rest_framework.decorators import api_view
 
@@ -181,20 +181,50 @@ def transaction_post(request):
         barcode2 = request.POST.get('barcode')
         flor_number_id = request.POST.get('flor')
         # flor_number = florNumber.objects.get(id=flor_number_id)
-        type_sequence = request.POST.get('type')
+        # type_sequence = request.POST.get('type')
 
         
-        db_save = Transactions.objects.create(
-            flor_num = flor_number_id,
+        transaction_save = Transactions.objects.create(
+            flor_num_id = flor_number_id,
             barcode = barcode2,
-            type_sequence = type_sequence
+            # type_sequence = type_sequence
         )
+        
+        data_ = dict(request.POST.lists())
+        data_.pop('csrfmiddlewaretoken')
+        data_.pop('barcode')
+        data_.pop('flor')
+        
+        
+        # print(data_)
+        entry = len(data_['mySelect'])
+        
+        # for k in data_.items():
+        #     print(k)
+       
+        result = []
+        for i in range(entry):
+            d={}
+            for j,k in enumerate(data_.items()):
+                if j == 0:
+                    d['type_sequence']= (k[1][i])
+                
+            result.append(d)
 
-        return redirect('test')
+
+        for r in result:
+            TypeSequence.objects.create(
+                transaction = transaction_save,
+                type_sequence = r['type_sequence'],
+                
+            )
+        
+
+        return redirect('search_barcode')
 
 
     else:
-        return render(request,"test.html",{})
+        return render(request,"transactions.html",{})
     
 def deleteTransaction(request,id):
     """
@@ -229,7 +259,8 @@ def testing_ajax(request):
         for b in barcodeTest:
             barcode_json = {}
             barcode_json['barcode'] = b.barcode
-            barcode_json['flor'] = b.flor_num.flor_number
+            barcode_json['flor'] = b.flor_num.id
+            # barcode_json['flor'] = b.flor_num
             
             result.append(barcode_json)
             

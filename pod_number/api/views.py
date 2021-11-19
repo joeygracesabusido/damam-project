@@ -220,7 +220,7 @@ def transaction_post(request):
             )
         
 
-        return redirect('search_barcode')
+        return redirect('barcode-list')
 
 
     else:
@@ -236,9 +236,14 @@ def deleteTransaction(request,id):
     return redirect('search_barcode/transactions-list')
 
 def get_transaction(request):
-    results = Transactions.objects.all()
+    # results = Transactions.objects.all()
+    # results = TypeSequence.objects.all()
     # context = {"flor_number": flor_number}
-    return render(request, "transactionsList.html", {"showTransactions": results})
+    
+    context = {
+        'transactions': TypeSequence.objects.all()
+    }
+    return render(request, "transactionsList.html", context)
     
 
 def testing_ajax(request):

@@ -46,14 +46,14 @@
             </tr>
         </thead>
         <tbody>
-            {% for list in showTransactions%}
+            {% for t in transactions%}
 
                 <tr>
-                    <td>{{list.id}}</td>
-                    <td>{{list.flor_num}}</td>
-                    <td>{{list.barcode}}</td>
-                    <td>{{list.type_sequence}}</td>
-                    <td>{{list.update}}</td>
+                    <td>{{t.transaction.id}}</td>
+                    <td>{{t.transaction.flor_num}}</td>
+                    <td>{{t.transaction.barcode}}</td>
+                    <td>{{t.type_sequence}}</td>
+                    <td>{{t.update}}</td>
                     
                     <td>
                         <a href=""
@@ -61,7 +61,7 @@
                         <i class="fas fa-database"></i> Edit</button></a>
                     </td>
                     <td>
-                        <a href="{% url 'transactions-delete' list.id%}"method="POST">
+                        <a href="{% url 'transactions-delete' t.transaction.id%}"method="POST">
                             <button type="button" class="btn btn-danger"><i class="fas fa-database"></i> Delete</button>   
                         </a>
                     </td>

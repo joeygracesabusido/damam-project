@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiple Selector</title>
+</head>
+<body>
+    <center>
+        <h1>
+            Transaction for Multiple Sequence
+        </h1>
+
+        <form action="{% url 'insert-transactons' %}" method="POST">
+            {% csrf_token %}
+            <div  class="container mt-3">
+                <label for="Product">Barcode</label><br>
+                <input 
+                type="text"
+                name="barcode"
+                id="barcode"
+                >
+                </input><br>
+            </div>
+
+            <div  class="container mt-3">
+                <label for="flor_number">Flor Number</label><br>
+                <input 
+                type="text"
+                name="flor"
+                id="flor"
+                >
+                </input><br>
+            </div>
+            <div  class="container mt-3">
+                
+                <input 
+                type="checkbox"
+                value="Cabin Ass"
+                > Cabin Ass
+                </input><br>
+
+                <input 
+                type="checkbox"
+                value="Errection"
+                > Errection
+                </input><br>
+
+                <input 
+                type="checkbox"
+                value="waterproof"
+                > waterproof
+                </input><br>
+            </div>
+        </form>
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+    </center>
+    <script>
+        $("#barcode").autocomplete({
+            source: function (request,response){
+                $.ajax({
+                    url: "{% url 'test' %}",
+                    dataType: "json",
+                    data: {term: request.term},
+                    success: function(data) {
+                        
+                        response ($.map(data, function(item){
+                            return {
+                                value: item.barcode,
+                                florNumb: item.flor
+                            }
+                        }))
+                    }
+                });
+            },
+            select: function(event, ui){
+                $(this).val(ui.item.value);
+                $('#flor').val(ui.item.florNumb)
+            }
+        }); 
+
+         // getCookie Provided by Django in the Official Docs
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+    </script>
+    
+</body>
+</html>

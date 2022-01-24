@@ -69,3 +69,29 @@ class TypeSequence(models.Model):
     
     def __str__(self):
         return f'{self.id}-{self.type_sequence}'
+
+
+class Transactionsdb(models.Model):
+
+    """
+    This is for database for 
+    transaction with out the 
+    tabular in line function
+    """
+    flor_num = models.ForeignKey(florNumber, 
+                                blank=True, null=True,
+                                on_delete=models.CASCADE) 
+    # flor_num = models.CharField(max_length=100 ,blank=True, null=True)
+    barcode = models.CharField(max_length=100 ,blank=True, null=True)
+    type_sequence = models.CharField(max_length=100 ,blank=True, null=True)
+    update = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        
+        db_table = 'transactions_db'
+        
+    
+    def __str__(self):
+        return f'{self.id}-{self.type_sequence}'
+

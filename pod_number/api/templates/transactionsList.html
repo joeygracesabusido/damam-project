@@ -9,20 +9,20 @@
     {% csrf_token %} 
 
     
-    {% comment %} <label for="floor_categories" >Floor Number</label>
+    <!-- <label for="floor_categories" >Floor Number</label>
     <select name="floor_categories" class="filter-selectbox">
     {% for result in showflor %}
         <option value="{{ result.id }}">{{ result.flor_number }}</option>
     {% endfor %} 
     
-    </select>  {% endcomment %}
+    </select>   -->
 
     
     
-    {% comment %} <input type="text"
+    <!-- <input type="text"
     name='flornum'
     placeholder="Barcode"
-    />   
+    />    -->
 
 
     <button type="submit" class="btn btn-secondary"><i class="fas fa-database"></i>Search</button> {% endcomment %}
@@ -40,9 +40,9 @@
                 <td>
                     
                 </td>
-                {% comment %} <td>
+                <!-- <td>
                     <a href="{% url 'insert-transactons' %}"<button type="button" class="btn btn-success"><i class="fas fa-database"></i> +AddNew</button></a>
-                </td> {% endcomment %}
+                </td>  -->
             </tr>
         </thead>
         <tbody>

@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" 
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.cs">
-        {% comment %} <link rel="stylesheet" href="{% static 'css/app.css' %}"> {% endcomment %}
+        <!-- {% comment %} <link rel="stylesheet" href="{% static 'css/app.css' %}"> {% endcomment %} -->
         <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
     </head>
     <body>
@@ -37,7 +37,7 @@
                     </input><br>
                 </div>
 
-                {% comment %} <div  class="container mt-3">
+                 <!-- <div  class="container mt-3">
                     <label for="Type_Sequence">Type & Sequence</label><br>
                     <select id="type" name="type">
                         <option value="cabin Ass">Cabin Ass</option>
@@ -56,7 +56,7 @@
                         <option value="test ">Test</option>
                         <option value="wrap ">Wrap</option>
                     </select>
-                </div>  {% endcomment %}
+                </div>   -->
 
                 <table class="table table-borderless">
                     <thead class="border-bottom font-weight-bold">
@@ -95,19 +95,19 @@
         <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
         
         <script>
-        {% comment %} $( function() {
-            $( "#product" ).autocomplete({
-            source:'{ % url 'test' % }',
-            minlenght: 2
-            });
-        } ); {% endcomment %}
+        // $( function() {
+        //     $( "#barcode" ).autocomplete({
+        //     source:"{ % url 'test' % }",
+        //     minlenght: 2
+        //     });
+        // } ); 
 
         $("#barcode").autocomplete({
             source: function (request,response){
                 $.ajax({
                     url: "{% url 'test' %}",
                     dataType: "json",
-                    data: {product: request.product},
+                    data: {term: request.term},
                     success: function(data) {
                         
                         response ($.map(data, function(item){
@@ -144,7 +144,7 @@
         const csrftoken = getCookie('csrftoken');
 
         // Setting the Click Event Listener on the Submit Button
-        {% comment %} $('[type="submit"]').on('click', function (e) {
+         $('[type="submit"]').on('click', function (e) {
             e.preventDefault()
             // Making the AJAX Request
             $.ajax({
@@ -167,7 +167,7 @@
                     console.log(error);
                 }
             });
-        }) {% endcomment %}
+        }) 
         $(document).ready(function(){
                 var maxField = 10; //Input fields increment limitation
                 var addButton = $('#add_button'); //Add button selector

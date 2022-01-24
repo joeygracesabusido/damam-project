@@ -55,12 +55,12 @@
         <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
         
         <script>
-        {% comment %} $( function() {
-            $( "#product" ).autocomplete({
-            source:'{ % url 'test' % }',
-            minlenght: 2
-            });
-        } ); {% endcomment %}
+            // $( function() {
+            //     $( "#product" ).autocomplete({
+            //     source:'{ % url 'test' % }',
+            //     minlenght: 2
+            //     });
+            // } );
         $("#product").autocomplete({
             source: function (request,response){
                 $.ajax({

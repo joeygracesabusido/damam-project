@@ -258,8 +258,8 @@ def testing_ajax(request):
             
     #     return JsonResponse(barcodeTest, safe=False)
     if request.is_ajax():
-        term = request.GET.get('product','')
-        barcodeTest = Barcodes.objects.filter(Q(barcode__startswith = term) | Q(barcode__icontains = term))
+        term = request.GET.get('term','')
+        barcodeTest = Barcodes.objects.filter(barcode__icontains = term)
         result = []
         for b in barcodeTest:
             barcode_json = {}
@@ -278,3 +278,26 @@ def testing_ajax(request):
     
         return render(request, 'test.html')
 
+def sequence_test(request):
+    """
+    This functions is
+    for sequence.html to view
+    """
+    if request.is_ajax():
+        term = request.GET.get('term','')
+        barcodeTest = Barcodes.objects.filter(barcode__icontains = term)
+        result = []
+        for b in barcodeTest:
+            barcode_json = {}
+            barcode_json['barcode'] = b.barcode
+            barcode_json['flor'] = b.flor_num.id
+            # barcode_json['flor'] = b.flor_num
+            
+            result.append(barcode_json)
+            
+        
+        data = json.dumps(result)
+        mimetype = 'application/json'
+        return HttpResponse(data, content_type='application/json')
+    else:
+        return render(request, 'sequence.html')

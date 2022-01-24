@@ -20,4 +20,6 @@ urlpatterns = [
     path('insert-transactons/', views.transaction_post, name="insert-transactons"),
     path('search_barcode/transactions-list/', views.get_transaction, name="search_barcode/transactions-list"), 
     path('transactions-delete/<int:id>/', views.deleteTransaction, name="transactions-delete"),
+
+    path('sequence/', views.sequence_test, name="sequence"),
 ]

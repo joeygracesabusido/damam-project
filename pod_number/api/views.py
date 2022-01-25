@@ -1,7 +1,7 @@
 import json
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
-from .models import Barcodes, florNumber, Transactions, TypeSequence
+from .models import Barcodes, florNumber, Transactions, TypeSequence,Transactionsdb
 
 from rest_framework.decorators import api_view
 
@@ -301,3 +301,37 @@ def sequence_test(request):
         return HttpResponse(data, content_type='application/json')
     else:
         return render(request, 'sequence.html')
+
+def insertSequenceTrans(request):
+    """
+    This function is for
+    inserting record for Transactiondb
+    table
+    """
+
+    if request.method == 'POST':
+        
+        barcode2 = request.POST.get('barcode')
+        flor_number_id = request.POST.get('flor')
+        # flor_number = florNumber.objects.get(id=flor_number_id)
+        txtvalue = request.POST.get('txtvalues')
+
+        
+        transaction_save = Transactionsdb.objects.create(
+            flor_num_id = flor_number_id,
+            barcode = barcode2,
+            type_sequence = txtvalue
+        )
+        return render(request, 'sequencelist.html')
+    else:
+        return render(request, 'sequence.html')
+
+def get_sequencelist(request):
+    # results = Transactions.objects.all()
+    # results = TypeSequence.objects.all()
+    # context = {"flor_number": flor_number}
+    
+    context = {
+        'sequenceList': Transactionsdb.objects.all()
+    }
+    return render(request, "sequencelist.html", context)

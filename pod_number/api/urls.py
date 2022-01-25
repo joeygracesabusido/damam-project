@@ -21,5 +21,7 @@ urlpatterns = [
     path('search_barcode/transactions-list/', views.get_transaction, name="search_barcode/transactions-list"), 
     path('transactions-delete/<int:id>/', views.deleteTransaction, name="transactions-delete"),
 
+    path('sequence/insert-sequenceTransaction/', views.insertSequenceTrans, name="insert-sequenceTransaction"),
     path('sequence/', views.sequence_test, name="sequence"),
+    path('sequence/sequence-list/', views.get_sequencelist, name="sequence/sequence-list"),
 ]

@@ -25,7 +25,7 @@
     />    -->
 
 
-    <button type="submit" class="btn btn-secondary"><i class="fas fa-database"></i>Search</button>
+    <!-- <button type="submit" class="btn btn-secondary"><i class="fas fa-database"></i>Search</button> -->
 
     <table class="table table-borderless">
         <thead class="border-bottom font-weight-bold">
@@ -46,12 +46,12 @@
             </tr>
         </thead>
         <tbody>
-            {% for t in transactions%}
+            {% for t in sequenceList%}
 
                 <tr>
-                    <td>{{t.transaction.id}}</td>
-                    <td>{{t.transaction.flor_num}}</td>
-                    <td>{{t.transaction.barcode}}</td>
+                    <td>{{t.id}}</td>
+                    <td>{{t.flor_num}}</td>
+                    <td>{{t.barcode}}</td>
                     <td>{{t.type_sequence}}</td>
                     <td>{{t.update}}</td>
                     
@@ -60,11 +60,7 @@
                         <button type="button" class="btn btn-primary">
                         <i class="fas fa-database"></i> Edit</button></a>
                     </td>
-                    <td>
-                        <a href="{% url 'transactions-delete' t.transaction.id%}"method="POST">
-                            <button type="button" class="btn btn-danger"><i class="fas fa-database"></i> Delete</button>   
-                        </a>
-                    </td>
+                    
                 </tr>
             
             {% endfor %}

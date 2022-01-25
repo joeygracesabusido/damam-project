@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" 
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.cs">
+        <!-- {% comment %} <link rel="stylesheet" href="{% static 'css/app.css' %}"> {% endcomment %} -->
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
     <title>Multiple Selector</title>
 </head>
 <body>
@@ -11,8 +16,9 @@
         <h1>
             Transaction for Multiple Sequence
         </h1>
-
-        <form action="{% url 'insert-transactons' %}" method="POST">
+    
+        <!-- <form> </form> -->
+        <form action="{% url 'insert-sequenceTransaction' %}" method="POST">
             {% csrf_token %}
             <div  class="container mt-3">
                 <label for="Product">Barcode</label><br>
@@ -20,8 +26,12 @@
                 type="text"
                 name="barcode"
                 id="barcode"
+               
                 >
                 </input><br>
+            </div>
+            <div>
+
             </div>
 
             <div  class="container mt-3">
@@ -38,30 +48,136 @@
                 <input 
                 type="checkbox"
                 value="Cabin Ass"
+                class ="selectedBox"
                 > Cabin Ass
                 </input><br>
 
                 <input 
                 type="checkbox"
                 value="Errection"
+                class ="selectedBox"
                 > Errection
                 </input><br>
 
                 <input 
                 type="checkbox"
                 value="waterproof"
-                > waterproof
+                class ="selectedBox"
+                > Waterproof
+                </input><br>
+
+                <input 
+                type="checkbox"
+                value="1st fix elec"
+                class ="selectedBox"
+                > 1st fix elec
+                </input><br>
+
+                <input 
+                type="checkbox"
+                value="1st fix plumbing"
+                class ="selectedBox"
+                > 1st fix plumbing
+                </input><br>
+
+                <input 
+                type="checkbox"
+                value="Floor tile"
+                class ="selectedBox"
+                > Floor tile
+                </input><br>
+
+                <input 
+                type="checkbox"
+                value="Wall tile"
+                class ="selectedBox"
+                > Wall tile
+                </input><br>
+
+                <input 
+                type="checkbox"
+                value="Wall grout"
+                class ="selectedBox"
+                > Wall grout
+                </input><br>
+
+                <input 
+                type="checkbox"
+                value="2nd fix elec"
+                class ="selectedBox"
+                > 2nd fix elec
+                </input><br>
+
+                <input 
+                type="checkbox"
+                value="fixtures"
+                class ="selectedBox"
+                > Fixtures
+                </input><br>
+
+                <input 
+                type="checkbox"
+                value="Silicone"
+                class ="selectedBox"
+                > Silicone
+                </input><br>
+
+                <input 
+                type="checkbox"
+                value="Floor grout"
+                class ="selectedBox"
+                > Floor grout
+                </input><br>
+
+                <input 
+                type="checkbox"
+                value="Clean"
+                class ="selectedBox"
+                > Clean
+                </input><br>
+
+                <input 
+                type="checkbox"
+                value="Test"
+                class ="selectedBox"
+                > Test
+                </input><br>
+
+
+                <input 
+                type="checkbox"
+                value="Wrap"
+                class ="selectedBox"
+                > Wrap
+                </input><br>
+
+            </div>
+            
+            <div  class="container mt-3">
+                <label for="Selected Value">Selected Value</label><br>
+                <input 
+                type="text"
+                name="txtvalues"
+                id="txtvalues"
+                size="75"
+                >
                 </input><br>
             </div>
+
+            <div  class="container mt-3">
+                <button type="submit" class="btn btn-success"><i class="fas fa-database">
+                </i>Save</button>
+            </div><br>
         </form>
+    </center>
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
         <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
-    </center>
+    
     <script>
         $("#barcode").autocomplete({
             source: function (request,response){
                 $.ajax({
-                    url: "{% url 'test' %}",
+                    url: "{% url 'sequence' %}",
                     dataType: "json",
                     data: {term: request.term},
                     success: function(data) {
@@ -98,6 +214,53 @@
             return cookieValue;
         }
         const csrftoken = getCookie('csrftoken');
+    </script>
+
+    <!-- this is for selected value fields -->
+    <script> 
+        $(document).ready(function()
+        {
+            $('.selectedBox').click(function()
+            {
+                var txt="";
+                $('.selectedBox:checked').each(function()
+                {
+                    txt+=$(this).val()+','
+                });
+                txt = txt.substring(0,txt.length-1);
+                $('#txtvalues').val(txt);
+            });
+
+        });
+    </script>
+
+    <script>
+        $('[type="submit"]').on('click', function (e) {
+            e.preventDefault()
+            // Making the AJAX Request
+            $.ajax({
+                url: "{% url 'insert-sequenceTransaction' %}",
+                type: "POST",
+                data: {
+                    barcode:  $('#barcode').val(),
+                    flor:  $('#flor').val(),
+                    txtvalues:  $('#txtvalues').val(),
+                    //type:  $('#type').val(),
+                },
+                
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                },
+                success: function (data) {
+                     window.location.href = "sequence-list"
+                
+                    console.log(data);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }) 
     </script>
     
 </body>
